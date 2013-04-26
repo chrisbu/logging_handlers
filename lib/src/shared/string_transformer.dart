@@ -6,24 +6,24 @@ part of logging_handlers_shared;
 class StringTransformer implements BaseLogRecordTransformer {
   
   /// Outputs [LogRecord.level]
-  static final LEVEL = "%p";  
+  static const LEVEL = "%p";  
   
   /// Outputs [LogRecord.message]
-  static final MESSAGE = "%m"; 
+  static const MESSAGE = "%m"; 
   
   /// Outputs the [Logger.name]
-  static final NAME = "%n"; 
+  static const NAME = "%n"; 
   
   /// Outputs the timestamp according to the Date Time Format specified in
   /// [timestampFormatString]
-  static final TIME = "%t"; // logger date timestamp.  Format using
+  static const TIME = "%t"; // logger date timestamp.  Format using
   
   /// Outputs the logger sequence
-  static final SEQ = "%s"; // logger sequence
-  static final EXCEPTION = "%x"; // logger exception
-  static final EXCEPTION_TEXT = "%e"; // logger exception message
-  static final TAB = "\t";
-  static final NEW_LINE = "\n";
+  static const SEQ = "%s"; // logger sequence
+  static const EXCEPTION = "%x"; // logger exception
+  static const EXCEPTION_TEXT = "%e"; // logger exception message
+  static const TAB = "\t";
+  static const NEW_LINE = "\n";
   
   /// Default format for a log message that does not contain an exception.
   static const DEFAULT_MESSAGE_FORMAT = "%t\t%n\t[%p]:\t%m";
@@ -93,6 +93,7 @@ class StringTransformer implements BaseLogRecordTransformer {
             return logRecord.sequenceNumber.toString();
           case EXCEPTION: 
             if (logRecord.exception != null) return logRecord.exception.toString();
+            break;
           case EXCEPTION_TEXT:
             return logRecord.exceptionText;
         }

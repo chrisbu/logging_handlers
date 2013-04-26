@@ -17,7 +17,7 @@ class MapTransformer implements BaseLogRecordTransformer {
     map["loggerName"] = logRecord.loggerName;
     map["exceptionText"] = logRecord.exceptionText;
     if (logRecord != null) {
-      map["exception"] = logRecord.exception.message;
+      map["exception"] = logRecord.exception.toString();
     }
     else {
       map["exception"] = null;
