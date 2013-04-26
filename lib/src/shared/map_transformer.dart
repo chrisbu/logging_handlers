@@ -10,18 +10,13 @@ class MapTransformer implements BaseLogRecordTransformer {
    */
   Map transform(LogRecord logRecord) {
     var map = new Map();
-    map["level"] = logRecord.level.name;
+    map["level"] = logRecord.level != null ? logRecord.level.name : null; 
     map["message"] = logRecord.message;
-    map["time"] = logRecord.time.toString();
+    map["time"] = logRecord.time != null ? logRecord.time.toString() : null;
     map["sequenceNumber"] = logRecord.sequenceNumber;
     map["loggerName"] = logRecord.loggerName;
     map["exceptionText"] = logRecord.exceptionText;
-    if (logRecord.exception != null) {
-      map["exception"] = logRecord.exception.toString();
-    }
-    else {
-      map["exception"] = null;
-    }    
+    map["exception"] = logRecord.exception != null ? logRecord.exception.toString() : null;    
     return map;
   }
 }
