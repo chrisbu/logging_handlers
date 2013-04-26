@@ -96,10 +96,18 @@ runMapTransformerTests() {
     var logRecord = new LogRecord(Level.INFO, message, loggerName, time);
     
     var impl = new MapTransformer();
-    var map = impl.transform(logRecord);
-    var json = stringify(map);
-    print(map);
-    print(json);
+    var map = impl.transform(logRecord); // convert the logRecord to a map    
+    String json = stringify(map); // convert the map to json with dart:json
+    Map map2 = parse(json); // convert the json back to a map
+    
+    expect(map2["message"], equals(logRecord.message));
+    expect(map2["loggerName"], equals(logRecord.loggerName));
+    expect(map2["level"], equals(logRecord.level.name));
+    expect(map2["sequenceNumber"], equals(logRecord.sequenceNumber));
+    expect(map2["exceptionText"], isNull);
+    expect(map2["exception"], isNull);
+    expect(map2["time"], equals(logRecord.time.toString()));
+    
   });
   
   test("defaults with exception", () {
@@ -115,9 +123,16 @@ runMapTransformerTests() {
         "Exception text");
     
     var impl = new MapTransformer();
-    var map = impl.transform(logRecord);
-    print(map);
-    var json = stringify(map);
-    print(json);
+    var map = impl.transform(logRecord); // convert the logRecord to a map    
+    String json = stringify(map); // convert the map to json with dart:json
+    Map map2 = parse(json); // convert the json back to a map
+    
+    expect(map2["message"], equals(logRecord.message));
+    expect(map2["loggerName"], equals(logRecord.loggerName));
+    expect(map2["level"], equals(logRecord.level.name));
+    expect(map2["sequenceNumber"], equals(logRecord.sequenceNumber));
+    expect(map2["exceptionText"], equals(logRecord.exceptionText));
+    expect(map2["exception"], equals(logRecord.exception.toString()));
+    expect(map2["time"], equals(logRecord.time.toString()));
   });  
 }
