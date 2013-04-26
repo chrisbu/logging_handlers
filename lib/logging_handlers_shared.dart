@@ -13,7 +13,7 @@ var _stringTransformer = new StringTransformer();
 
 
 /**
- * Get a logger handler that ouputs using the build-in [print] function.
+ * Creates a default handler that ouputs using the build-in [print] function.
  * 
  * Example usage, with custom message formatting to make it look like the
  * standard print() output:
@@ -23,7 +23,7 @@ var _stringTransformer = new StringTransformer();
  * 
  *     main() {
  *       var logger = new Logger("mylogger");
- *       logger.onRecord.listen(printHandler(messageFormat:"%m"));
+ *       logger.onRecord.listen(new PrintHandler(messageFormat:"%m"));
  *       logger.info("Hello World"); // same as: print("Hello World");
  *     }
  *     
@@ -31,11 +31,11 @@ var _stringTransformer = new StringTransformer();
  *  then you get the defalut message formatting, for example
  *  
  *     var logger = new Logger("mylogger");
- *     logger.onRecord.listen(printHandler());
+ *     logger.onRecord.listen(new PrintHandler());
  *     logger.info("Hello World"); 
  *     // 2013-04-26 11:50:40.506 mylogger  [INFO]: Hello World
  *   
- *  Takes the following optional parameters:
+ *  The [PrintHandler] consutrctor takes the following optional parameters:
  *  
  *  - [messageFormat] - The format string for log messages.  
  *    This defaults to [StringTransformer.DEFAULT_MESSAGE_FORMAT].
@@ -51,20 +51,35 @@ var _stringTransformer = new StringTransformer();
  *  Check out the [StringTransformer] class for possible format strings.
  *  
  */
-LoggerHandler printHandler({
-    messageFormat: StringTransformer.DEFAULT_MESSAGE_FORMAT, 
-    exceptionFormatSuffix: StringTransformer.DEFAULT_EXCEPTION_FORMAT, 
-    timestampFormat: StringTransformer.DEFAULT_DATE_TIME_FORMAT,
-    printFunc: print}) {
-      
-  var transformer = new StringTransformer(
-      messageFormat: messageFormat, 
-      exceptionFormatSuffix: exceptionFormatSuffix, 
-      timestampFormat: timestampFormat);
-  // return a closure that uses the transformer with the specified formatting
-  var result = (LogRecord logRecord) {
-    printFunc(transformer.transform(logRecord));   
-  };
+class PrintHandler implements BaseLoggingHandler {
   
-  return result;
+  var _transformer;
+  String messageFormat;
+  String exceptionFormatSuffix;
+  String timestampFormat;
+  Function printFunc;
+  
+  PrintHandler({
+    this.messageFormat: StringTransformer.DEFAULT_MESSAGE_FORMAT, 
+    this.exceptionFormatSuffix: StringTransformer.DEFAULT_EXCEPTION_FORMAT, 
+    this.timestampFormat: StringTransformer.DEFAULT_DATE_TIME_FORMAT,
+    this.printFunc: print}) {
+    _transformer = new StringTransformer(
+        messageFormat: messageFormat, 
+        exceptionFormatSuffix: exceptionFormatSuffix, 
+        timestampFormat: timestampFormat);
+  }
+  
+  void call(LogRecord logRecord) {
+    printFunc(_transformer.transform(logRecord));
+  }
+}
+
+
+/**
+ * A base logging handler class that can be psassed into the 
+ * logger.onRecord.listen() handler.
+ */
+abstract class BaseLoggingHandler {
+  void call(LogRecord logRecord);
 }
