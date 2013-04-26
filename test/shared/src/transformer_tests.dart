@@ -19,8 +19,8 @@ runTransformerTests() {
       runStringTransformerTests();
     });
     
-    group("JsonTransformer", () {
-      runJsonTransformerTests();
+    group("MapTransformer", () {
+      runMapTransformerTests();
     });
 
   });
@@ -88,6 +88,36 @@ runStringTransformerTests() {
   });  
 }
 
-runJsonTransformerTests() {
+runMapTransformerTests() {
+  test("defaults", () {
+    var message = "I am a message";
+    var loggerName = "my.logger";
+    var time = DateTime.parse("2012-02-27 13:27:00.123456z");
+    var logRecord = new LogRecord(Level.INFO, message, loggerName, time);
+    
+    var impl = new MapTransformer();
+    var map = impl.transform(logRecord);
+    var json = stringify(map);
+    print(map);
+    print(json);
+  });
   
+  test("defaults with exception", () {
+    var message = "I am a message";
+    var loggerName = "my.logger";
+    var time = DateTime.parse("2012-02-27 13:27:00.123456z");
+    var exception = new Exception("I am an exception");
+    var logRecord = new LogRecord(Level.INFO, 
+        message, 
+        loggerName, 
+        time, 
+        exception,
+        "Exception text");
+    
+    var impl = new MapTransformer();
+    var map = impl.transform(logRecord);
+    print(map);
+    var json = stringify(map);
+    print(json);
+  });  
 }

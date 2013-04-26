@@ -1,7 +1,7 @@
 part of logging_handlers_shared;
 
 /**
- * Transforms a Log Record into a Map that can be parsed by JSON.parse()  
+ * Transforms a Log Record into a Map that can be stringified by JSON.stringify()  
  */
 class MapTransformer implements BaseLogRecordTransformer {
   
@@ -12,11 +12,11 @@ class MapTransformer implements BaseLogRecordTransformer {
     var map = new Map();
     map["level"] = logRecord.level.name;
     map["message"] = logRecord.message;
-    map["time"] = logRecord.time;
+    map["time"] = logRecord.time.toString();
     map["sequenceNumber"] = logRecord.sequenceNumber;
     map["loggerName"] = logRecord.loggerName;
     map["exceptionText"] = logRecord.exceptionText;
-    if (logRecord != null) {
+    if (logRecord.exception != null) {
       map["exception"] = logRecord.exception.toString();
     }
     else {

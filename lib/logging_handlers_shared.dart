@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 
 part 'src/shared/transformer.dart';
 part 'src/shared/string_transformer.dart';
-part 'src/shared/json_transformer.dart';
+part 'src/shared/map_transformer.dart';
 
 var _stringTransformer = new StringTransformer();
 
