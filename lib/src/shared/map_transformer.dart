@@ -3,7 +3,7 @@ part of logging_handlers_shared;
 /**
  * Transforms a Log Record into a Map that can be stringified by JSON.stringify()  
  */
-class MapTransformer implements BaseLogRecordTransformer {
+class MapTransformer implements LogRecordTransformer {
   
   /**
    * Convert the logRecord into a map that is parsable by the JSON library

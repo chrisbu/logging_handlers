@@ -3,7 +3,7 @@ part of logging_handlers_shared;
 /**
  * Format a log record according to a string pattern
  */
-class StringTransformer implements BaseLogRecordTransformer {
+class StringTransformer implements LogRecordTransformer {
   
   /// Outputs [LogRecord.level]
   static const LEVEL = "%p";  

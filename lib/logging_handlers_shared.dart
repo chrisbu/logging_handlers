@@ -53,25 +53,25 @@ var _stringTransformer = new StringTransformer();
  */
 class PrintHandler implements BaseLoggingHandler {
   
-  var _transformer;
+  BaseLogRecordTransformer transformer;
   String messageFormat;
   String exceptionFormatSuffix;
   String timestampFormat;
   Function printFunc;
   
   PrintHandler({
-    this.messageFormat: StringTransformer.DEFAULT_MESSAGE_FORMAT, 
-    this.exceptionFormatSuffix: StringTransformer.DEFAULT_EXCEPTION_FORMAT, 
-    this.timestampFormat: StringTransformer.DEFAULT_DATE_TIME_FORMAT,
-    this.printFunc: print}) {
-    _transformer = new StringTransformer(
+      this.messageFormat: StringTransformer.DEFAULT_MESSAGE_FORMAT, 
+      this.exceptionFormatSuffix: StringTransformer.DEFAULT_EXCEPTION_FORMAT, 
+      this.timestampFormat: StringTransformer.DEFAULT_DATE_TIME_FORMAT,
+      this.printFunc: print}) {
+    transformer = new StringTransformer(
         messageFormat: messageFormat, 
         exceptionFormatSuffix: exceptionFormatSuffix, 
         timestampFormat: timestampFormat);
   }
   
   void call(LogRecord logRecord) {
-    printFunc(_transformer.transform(logRecord));
+    printFunc(transformer.transform(logRecord));
   }
 }
 
@@ -81,5 +81,6 @@ class PrintHandler implements BaseLoggingHandler {
  * logger.onRecord.listen() handler.
  */
 abstract class BaseLoggingHandler {
+  LogRecordTransformer transformer;
   void call(LogRecord logRecord);
 }
