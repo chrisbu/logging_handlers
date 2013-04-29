@@ -1,19 +1,19 @@
 part of server;
 
-class FileLoggingHandler implements BaseLoggingHandler {
+class SyncFileLoggingHandler implements BaseLoggingHandler {
   
   LogRecordTransformer transformer;
   final String filename;
   File _file;
-  IOSink _sink;
   
-  FileLoggingHandler(String this.filename, {this.transformer}) {
+  SyncFileLoggingHandler(String this.filename, {this.transformer}) {
     if (this.transformer == null) this.transformer = new StringTransformer();
-    _file = new File(filename);
-    _sink = _file.openWrite(mode:FileMode.APPEND);
+    _file = new File(filename);        
   }
   
   call(LogRecord logRecord) {
-     _sink.writeln(transformer.transform(logRecord));     
+    var f = _file.openSync(mode:FileMode.APPEND);
+    f.writeStringSync(transformer.transform(logRecord) + "\n");
+    f.closeSync();
   }  
 }
