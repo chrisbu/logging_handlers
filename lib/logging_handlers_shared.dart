@@ -53,7 +53,7 @@ var _stringTransformer = new StringTransformer();
  */
 class PrintHandler implements BaseLoggingHandler {
   
-  BaseLogRecordTransformer transformer;
+  LogRecordTransformer transformer;
   String messageFormat;
   String exceptionFormatSuffix;
   String timestampFormat;

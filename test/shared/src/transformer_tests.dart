@@ -27,7 +27,7 @@ runTransformerTests() {
 }
 
 
-class TestFormatterImpl extends BaseLogRecordTransformer { }
+class TestFormatterImpl extends LogRecordTransformer { }
 
 
 runStringTransformerTests() {
