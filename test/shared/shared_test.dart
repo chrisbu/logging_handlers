@@ -36,6 +36,13 @@ runTopLevelTests() {
       // contains, rather than equals, because it contains the always-changing timestamp
       expect(printed, contains("\tmylogger\t[INFO]:\tHello World"));
     });
+    
+    test("quick n dirty", () {
+      startQuickLogging();
+      info("I'm a quick n dirty log message");
+    });
   });
+  
+  
   
 }

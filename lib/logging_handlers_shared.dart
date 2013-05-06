@@ -33,6 +33,12 @@ log(String message, Level level, [String loggerName]) {
   }
 }
 
+/// quick replacement for `print()` - use `info()` or `debug()`
+startQuickLogging() {
+  hierarchicalLoggingEnabled = true;
+  Logger.root.onRecord.listen(new PrintHandler());
+  info("Quick'n'Dirty logging is enabled.  Better to do it properly, though."); 
+}
 
 /**
  * Creates a default handler that ouputs using the build-in [print] function.
