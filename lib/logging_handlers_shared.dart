@@ -11,6 +11,28 @@ part 'src/shared/map_transformer.dart';
 
 var _stringTransformer = new StringTransformer();
 
+/// Emit a log [message] for the optional [loggerName], at [Level.FINE]
+debug(String message, [String loggerName]) => log(message, Level.FINE, loggerName);
+
+/// Emit a log [message] for the optional [loggerName], at [Level.INFO]
+info(String message, [String loggerName]) => log(message, Level.INFO, loggerName);
+
+/// Emit a log [message] for the optional [loggerName], at [Level.WARNING]
+warn(String message, [String loggerName]) => log(message, Level.WARNING, loggerName);
+
+/// Emit a log [message] for the optional [loggerName], at [Level.SEVERE]
+error(String message, [String loggerName]) => log(message, Level.SEVERE, loggerName);
+
+/// Emit a log [message] for the optional [loggerName], at the [level] indicated.
+log(String message, Level level, [String loggerName]) {
+  if (loggerName != null) {
+    new Logger(loggerName)..log(level, message);
+  }
+  else {
+    Logger.root.log(level, message);
+  }
+}
+
 
 /**
  * Creates a default handler that ouputs using the build-in [print] function.
@@ -35,7 +57,7 @@ var _stringTransformer = new StringTransformer();
  *     logger.info("Hello World"); 
  *     // 2013-04-26 11:50:40.506 mylogger  [INFO]: Hello World
  *   
- *  The [PrintHandler] consutrctor takes the following optional parameters:
+ *  The [PrintHandler] constr uctor takes the following optional parameters:
  *  
  *  - [messageFormat] - The format string for log messages.  
  *    This defaults to [StringTransformer.DEFAULT_MESSAGE_FORMAT].

@@ -4,9 +4,9 @@ import 'package:logging/logging.dart';
 import 'dart:async'; 
 
 main() {
-   //hierarchicalLoggingEnabled = true;
+   hierarchicalLoggingEnabled = true;
    var logger = new Logger("mylogger")..level = Level.ALL;
-   var loggerui = new Logger("loggerui")..level = Level.INFO;
+   new Logger("loggerui")..level = Level.ALL;
    Logger.root.level = Level.ALL;
    Timer.run(() {
      var loggerComponent = query("#loggerui");
@@ -21,8 +21,7 @@ main() {
    
    query("#click").onClick.listen((_) {
      logger.fine("Button clicked");
-     loggerui.finest("Foo");
-     
+     debug("Foo", "loggerui");
    });
    
  }
