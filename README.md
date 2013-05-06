@@ -4,7 +4,7 @@ logging_handlers
 A package of logging handlers, for either the client or server, that uses the 
 Dart SDK's [`logging` pub package](http://pub.dartlang.org/packages/logging)
 
-Stop Using `print()` start using info()
+Stop Using `print()` start using `info()`
 --------------------
 
 The logging_handlers package lets you use proper logging in your client-side or
@@ -24,10 +24,24 @@ The quickest (and dirtiest) way to replace `print()`
 This is not the *best* way, but it's certainly better than `print()`.
 
 0. Add `logging_handlers` package to pubspec.yaml
-1. `import 'package:logging_handlers/logging_handlers_shared.dnart';`
+1. `import 'package:logging_handlers/logging_handlers_shared.dart';`
 2. Use `debug(msg)`, `info(msg)`, `warn(msg)`, `error(msg)` as appropriate.
 3. Somewhere in your initialization code (start of your unit tests, `main()` 
 or other initialization code), call `startQuickLogging()`
+
+For example:
+
+    import 'package:logging_handlers/logging_handlers_shared.dnart';
+
+    main() {
+    	startQuickLogging();
+    	info("Hello World");
+    }
+
+will output:
+
+    2013-05-06 16:42:42.593		[INFO]:	Quick'n'Dirty logging is enabled.  It's better to do it properly, though.
+    2013-05-06 16:42:42.604		[INFO]:	Hello World
 
 Note: Dart's logging has more fine grained logging levels - the top-level 
 functions above are shorthand for some of these:
@@ -65,3 +79,4 @@ your library
     	_logger.fine("Hello World");
     	_logger.error("Something bad has happened");
     }
+
