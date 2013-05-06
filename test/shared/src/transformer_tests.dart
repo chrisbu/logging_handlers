@@ -64,11 +64,11 @@ runStringTransformerTests() {
     var loggerName = "my.logger";
     var time = DateTime.parse("2012-02-27 13:27:00.123456z");
     var exception = new Exception("I am an exception");
-    var logRecordNoException = new LogRecord(Level.INFO, 
+    var logRecordNoException = new LogRecord(Level.FINEST, 
         message, 
         loggerName,
         time);
-    var logRecordWithException = new LogRecord(Level.INFO, 
+    var logRecordWithException = new LogRecord(Level.FINEST, 
         message, 
         loggerName, 
         time, 
@@ -81,9 +81,9 @@ runStringTransformerTests() {
     // relation to other tests.  For that reason, we'll check that the logged
     // output "contains" the expected string without the sequence number prefix 
     expect(impl.transform(logRecordNoException),
-        contains(" 27-02-2012 my.logger[INFO]: I am a message"));
+        contains(" 27-02-2012 my.logger[FINEST]: I am a message"));
     expect(impl.transform(logRecordWithException),
-        contains(" 27-02-2012 my.logger[INFO]: I am a message Exception text Exception: I am an exception"));
+        contains(" 27-02-2012 my.logger[FINEST]: I am a message Exception text Exception: I am an exception"));
     
   });  
 }

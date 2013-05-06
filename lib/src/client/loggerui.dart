@@ -11,6 +11,8 @@ class LoggerUi extends WebComponent implements BaseLoggingHandler {
   
   List<String> messages = new List<String>();
 
+  final _logger = new Logger("loggerui");
+  
   LoggerUi() {
     transformer = new StringTransformer();
   }
@@ -18,9 +20,11 @@ class LoggerUi extends WebComponent implements BaseLoggingHandler {
   LogRecordTransformer transformer;
   
   void call(LogRecord logRecord) {
+    if (logRecord.loggerName != "loggerui") _logger.finest("adding logrecord"); // don;t log our own records
     logRecords.add(logRecord);
     messages.add(transformer.transform(logRecord));
     watcher.dispatch();
+    if (logRecord.loggerName != "loggerui") _logger.finest("logrecord added");
   }
   
 }

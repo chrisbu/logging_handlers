@@ -4,12 +4,15 @@ import 'package:logging/logging.dart';
 import 'dart:async'; 
 
 main() {
-   var logger = new Logger("mylogger");
+   //hierarchicalLoggingEnabled = true;
+   var logger = new Logger("mylogger")..level = Level.ALL;
+   var loggerui = new Logger("loggerui")..level = Level.INFO;
+   Logger.root.level = Level.ALL;
    Timer.run(() {
      var loggerComponent = query("#loggerui");
      var loggerHandler = loggerComponent.xtag;
      
-     var listener = logger.onRecord.asBroadcastStream();
+     var listener = Logger.root.onRecord.asBroadcastStream();
      listener.listen(loggerHandler);
      listener.listen(new PrintHandler());
      logger.warning("Hello World"); // should output to the console       
@@ -17,7 +20,9 @@ main() {
    
    
    query("#click").onClick.listen((_) {
-     logger.info("Button clicked");
+     logger.fine("Button clicked");
+     loggerui.finest("Foo");
+     
    });
    
  }
