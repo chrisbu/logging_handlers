@@ -75,8 +75,14 @@ your library
 
     final _logger = new Logger("my_library");
 
-    constructor
-    	_logger.fine("Hello World");
-    	_logger.error("Something bad has happened");
+    class MyClass {
+    	MyClass() {
+	       _logger.fine("MyClass created");
+	    }
+
+	    foo() {
+	      _logger.error("Something bad has happened");
+	    }
     }
+
 
