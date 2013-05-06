@@ -18,6 +18,32 @@ the amount of logging output from your debug messages (and, I hope, you want to
 do the same for my debug messages).  By using the Dart logging framework, we 
 can both be happy.
 
+There are two parts to logging:
+-------------------------------
+
+1. Sending log messages into a logging framework
+2. Outputting the log messages (eg, to the stdout, a file, the browser).
+
+Dart's `print()` sort of covers both of these use cases, 
+and the quick'n'dirty alternative described
+below also does the same thing.  It's not the best way, but at least it means 
+that log messages can be putput somewhere other than the console 
+(such as a file).
+
+First, some background about logging
+-------------------
+
+Dart's `logging` pub package, that forms part of the Dart SDK, covers use-case
+1, in other words, it lets you send log messages into a logging framework.  
+This framework lets you attach **handlers** to that framework that can listen
+to the stream of log messages.
+
+This package, `logging_handlers` provides some default handlers that 
+lets you output messages to a variety of locations, in a variety of formats.
+
+At the moment, you can output a log message as a tab delimited `String` or a 
+`JSON`able `Map`,  and you can output a log message to the console 
+
 The quickest (and dirtiest) way to replace `print()`
 -------------------------------------
 
@@ -38,12 +64,12 @@ For example:
     	info("Hello World");
     }
 
-will output:
+will output to the console:
 
     2013-05-06 16:42:42.593		[INFO]:	Quick'n'Dirty logging is enabled.  It's better to do it properly, though.
     2013-05-06 16:42:42.604		[INFO]:	Hello World
 
-Note: Dart's logging has more fine grained logging levels - the top-level 
+**Note:** Dart's logging has more fine grained logging levels - the top-level 
 functions above are shorthand for some of these:
 
                  FINEST // highly detailed tracing
@@ -55,20 +81,42 @@ functions above are shorthand for some of these:
     error(msg) = SEVERE // serious failures
                  SHOUT // extra debugging loudness
 
-But see below for better ways, that allow users of your code more control, and 
-let you have finer-grained control over logging.
+But see below for better ways that allow users of your code more control over
+what actually gets output, and let you have finer-grained control over logging.
 
-The better way
+The a slightly better way (but still a bit quick'n'dirty) to replace `print()`
 --------------
 
-Give your logger a name, such as your libraries name when you call one of the 
-logging functions, for example: `debug("Hello World", "my_library_name");`
+Let users of your code filter out your specific log messages by giving your
+log messages a name.  The best name is the name of your library.
+for example: 
 
-The best way
+    library my_library;
+    import 'package:logging_handlers/logging_handlers_shared.dnart';
+
+    class Foo() {
+      Foo() {
+      	debug("Foo is created", "my_library");
+      }
+    }
+
+    main() {
+      startQuickLogging();
+      new Foo(); 
+    }
+
+this outputs:
+
+    2013-05-06 16:42:42.593		[INFO]:	Quick'n'Dirty logging is enabled.  It's better to do it properly, though.
+    2013-05-06 16:42:42.604 my_library		[INFO]:	Foo is created
+
+
+
+The best way to implement logging
 ------------
 
 Create a top-level `logger` instance in your library, and give it the name of 
-your library
+your library:
 
     library my_library;
     import 'package:logging_handlers/logging_handlers_shared.dnart';
@@ -86,3 +134,7 @@ your library
     }
 
 
+Then, users of your library (including yourself), can output the logging entries
+to a variety of different handlers
+
+// cont...
