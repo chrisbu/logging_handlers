@@ -4,7 +4,7 @@ logging_handlers
 A package of logging handlers, for either the client or server, that uses the 
 Dart SDK's [`logging` pub package](http://pub.dartlang.org/packages/logging)
 
-For a quick refrence on how to use this package, [go here](https://github.com/chrisbu/logging_handlers#quick-reference)
+For a quick reference on how to use this package, [go here](https://github.com/chrisbu/logging_handlers#quick-reference)
 
 Stop Using `print(msg)` start using `info(msg)`
 --------------------
