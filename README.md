@@ -173,6 +173,7 @@ library).
 **Now that you've seen how to emit log messages into a framework, let's take
 a look at how to control where those messages go**
 
-**Controlling log message output**
+Controlling log message output
+---------------------------------
 
 // TODO
