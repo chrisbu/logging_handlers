@@ -8,19 +8,12 @@ main() {
    var logger = new Logger("mylogger")..level = Level.ALL;
    new Logger("loggerui")..level = Level.ALL;
    Logger.root.level = Level.ALL;
-   Timer.run(() {
-     var loggerComponent = query("#loggerui");
-     var loggerHandler = loggerComponent.xtag;
-     
-     var listener = Logger.root.onRecord.asBroadcastStream();
-     listener.listen(loggerHandler);
-     listener.listen(new PrintHandler());
-     logger.warning("Hello World"); // should output to the console       
-   });
+   
+   attachXLoggerUi();
    
    
    query("#click").onClick.listen((_) {
-     logger.fine("Button clicked");
+     logger.info("Button clicked");
      debug("Foo", "loggerui");
    });
    
