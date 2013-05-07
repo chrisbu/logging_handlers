@@ -387,10 +387,87 @@ Now let's use the hierarchy to use different logging for a specific class
       doSomethingInMyLibrary(); // logging is not be output      
     }
 
+Quick Reference
+-------
+
+**Logging best practice**
+
+1. Add `logging` and `logging_handlers` to pubspec
+2. Import the `logging` SDK where you want to write log messages
+
+    import 'package:logging/logging.dart'; 
+
+3. Create a logger (or loggers), and use them
+
+    final _libraryLogger = new Logger("my_library");
+
+    doSomething() {
+      _libraryLogger.info("Something is done")
+    }
+
+    class MyClass {
+      final _classLogger = new Logger("my_library.MyClass")
+
+      MyClass() {
+        _classLogger.fine("MyClass is constructed");
+      }
+
+    }
+
+4. When you use your library / class, and want to output some logging, create
+an instance of a `LoggingHandler` and attach it to the root logger
+
+  import 'package:logging_handlers/logging_handlers_shared.dart'; 
+  import 'your_library';
+
+  main() {
+    Logger.root.onRecord.listen(new PrintHandler());
+  }
+
+5. When you want finer control over what get's output, use hierarchical loggin
+and set levels
+
+  import 'package:logging_handlers/logging_handlers_shared.dart'; 
+  import 'your_library';
+  import 'package:my_library/my_library.dart';
+
+  main() {
+    Logger.root.onRecord.listen(new PrintHandler());
+    Logger.root.level = Level.OFF; // log nothing by default
+    new Logger("your_library")..level = Level.ALL; // log all in your library    
+  }
+
+*Server handlers are found here:*
+
+    import 'package:logging_handlers/server_logging_handlers.dart'; 
+
+*Client logging handlers are found here:*
+
+    import 'package:logging_handlers/browser_logging_handlers.dart'; 
+
+*Web UI component is here:*
+
+    <link rel="import" href="package:logging_handlers/src/client/loggerui.html">
+    ...
+    <x-loggerui></x-loggerui>
+
+    ... 
+    // and in your script, call:
+    import 'package:logging/logging.dart'; 
+    import 'package:logging_handlers/browser_logging_handlers.dart'; 
+
+    main() {
+      hierarchicalLoggingEnabled = true;
+      attachXLoggerUi();
+    }
+
 
 Caveats
 --------
 
 The Logger framework (as at M4), has a TODO about logging exceptions.  At the 
-moment it doesn't.  If you want to log exceptions, add the exception text to
+moment _it doesn't_.  If you want to log exceptions, add the exception text to
 the log message.
+
+If you find any problems or errors, then please let me know.
+This was current as at r21823
