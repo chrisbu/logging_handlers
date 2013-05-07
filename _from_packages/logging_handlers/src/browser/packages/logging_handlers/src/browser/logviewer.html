@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<html>
+  <body>   
+    <element name="x-logviewer" constructor="LogViewer" extends="div">
+      <template>
+        Logging:
+        
+          <template iterate="message in messages">
+  {{message}}
+          </template>
+        
+      </template>
+      <script type="application/dart" src="logviewer.dart"></script>       
+  </element>
+    </body>
+</html>
