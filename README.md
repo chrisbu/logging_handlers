@@ -395,10 +395,13 @@ Quick Reference
 1. Add `logging` and `logging_handlers` to pubspec
 2. Import the `logging` SDK where you want to write log messages
 
+    ```
     import 'package:logging/logging.dart'; 
+    ```
 
 3. Create a logger (or loggers), and use them
 
+    ```
     final _libraryLogger = new Logger("my_library");
 
     doSomething() {
@@ -411,31 +414,35 @@ Quick Reference
       MyClass() {
         _classLogger.fine("MyClass is constructed");
       }
-
     }
+    ```
 
 4. When you use your library / class, and want to output some logging, create
 an instance of a `LoggingHandler` and attach it to the root logger
 
-  import 'package:logging_handlers/logging_handlers_shared.dart'; 
-  import 'your_library';
+    ```
+    import 'package:logging_handlers/logging_handlers_shared.dart'; 
+    import 'your_library';
 
-  main() {
-    Logger.root.onRecord.listen(new PrintHandler());
-  }
+    main() {
+      Logger.root.onRecord.listen(new PrintHandler());
+    }
+    ```
 
 5. When you want finer control over what get's output, use hierarchical loggin
 and set levels
+  
+    ```
+    import 'package:logging_handlers/logging_handlers_shared.dart'; 
+    import 'your_library';
+    import 'package:my_library/my_library.dart';
 
-  import 'package:logging_handlers/logging_handlers_shared.dart'; 
-  import 'your_library';
-  import 'package:my_library/my_library.dart';
-
-  main() {
-    Logger.root.onRecord.listen(new PrintHandler());
-    Logger.root.level = Level.OFF; // log nothing by default
-    new Logger("your_library")..level = Level.ALL; // log all in your library    
-  }
+    main() {
+      Logger.root.onRecord.listen(new PrintHandler());
+      Logger.root.level = Level.OFF; // log nothing by default
+      new Logger("your_library")..level = Level.ALL; // log all in your library    
+    }
+    ```
 
 *Server handlers are found here:*
 
