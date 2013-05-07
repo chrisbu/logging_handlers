@@ -62,7 +62,7 @@ or other initialization code), call `startQuickLogging()`
 
 For example:
 
-    import 'package:logging_handlers/logging_handlers_shared.dnart';
+    import 'package:logging_handlers/logging_handlers_shared.dart';
 
     main() {
     	startQuickLogging();
@@ -97,7 +97,7 @@ log messages a name.  The best name is the name of your library.
 for example: 
 
     library my_library; 
-    import 'package:logging_handlers/logging_handlers_shared.dnart';
+    import 'package:logging_handlers/logging_handlers_shared.dart';
 
     class Foo() {
       Foo() {
@@ -126,7 +126,7 @@ Create a `Logger` instance in your library, and give it the name of
 your library:
 
     library my_library;
-    import 'package:logging_handlers/logging_handlers_shared.dnart';
+    import 'package:logging_handlers/logging_handlers_shared.dart';
 
     final _logger = new Logger("my_library");
 
@@ -146,7 +146,7 @@ a `.` to separate).  For example, you might have a top-level logger,
 and individual loggers for specific classes:
 
     library my_library;
-    import 'package:logging_handlers/logging_handlers_shared.dnart';
+    import 'package:logging_handlers/logging_handlers_shared.dart';
 
     final _libraryLogger = new Logger("my_library"); // top level logger
 
@@ -176,4 +176,221 @@ a look at how to control where those messages go**
 Controlling log message output
 ---------------------------------
 
-// TODO
+The code in your classes and libraries don't actually run until you pull them
+into a Dart application (or unit test) via the top-level `main()` function.
+
+In the `main()` function, you need to initialize the logging framework with
+a logging handler.  The simplest version of this is the `PrintHandler`, which
+outputs log messages to the console in the same way that `print()` does.
+
+Let's assume that you've implemented logging using "the best way" which
+contains your logger name.
+
+    // the SDK logging framework
+    import 'package:logging/logging.dart'; 
+    // Handlers that are shared between client and server
+    import 'package:logging_handlers/logging_handlers_shared.dart'; 
+    // your library, from above...
+    import 'my_library'; 
+
+    main() {
+      Logger.root.onRecord.listen(new PrintHandler()); // default PrintHandler
+      var myclass = new MyClass(); // from above - outputs log message
+    }
+
+If you're on the server-side, and you want to log to a file, the 
+`logging_handlers` package includes a very simple (synchronous) filesystem 
+log file handler: `SyncFileLoggingHandler`.
+
+    // the SDK logging framework
+    import 'package:logging/logging.dart'; 
+    // Handlers that run server-side
+    import 'package:logging_handlers/server_logging_handlers.dart'; 
+    // your library, from above...
+    import 'my_library'; 
+
+    main() {
+      Logger.root.onRecord.listen(new SyncFileLoggingHandler("myLogFile.txt")); 
+      var myclass = new MyClass(); // from above - outputs log message
+    }  
+
+And if you're on the client side, there's a handy (and incredibly basic)
+web component `<x-loggerui>` to output log messages on screen.
+
+In your Web UI enabled application, your HTML will look something like this:
+
+    <html>
+      <head>
+        <!-- import the loggerui component -->
+        <link rel="import" href="package:logging_handlers/src/client/loggerui.html">
+      </head>
+ 
+      <body>   
+        <!-- other content... -->
+
+        <x-loggerui></x-loggerui>  <!-- Logger widget -->
+
+        <!-- standard app scripts -->
+        <script type="application/dart" src="test.dart"></script>
+        <script src="packages/browser/dart.js"></script>
+      </body>
+    </html>
+
+And in your app's main() function, you call `attachXLoggerUi()` like this:
+
+    import 'package:logging_handlers/browser_logging_handlers.dart';
+
+    main() {
+      attachXLoggerUi(); // lives in the browser_logging_handlers library
+    }
+
+The `attachXLoggerUi` function runs in the next event loop iteration after main 
+(using `Timer.run`), so any startup logging won't appear.  This is because the
+web component's themselves aren't available until the next event loop.
+
+**Attaching multiple handlers**
+
+Sometimes, you want to attach multiple handlers.  That's fine, because the 
+logging framework uses Streams, so you just need to use `asBroadcastStream()`:
+
+    main() {
+      var loggerStream = Logger.root.onRecord.asBroadcastStream();
+      // attach the PrintHandler and the File logging handler
+      loggerStream.listen(new PrintHandler()); 
+      loggerStream.listen(new SyncFileLoggingHandler("myLogFile.txt"));       
+    }  
+
+
+**Note** _At present, the implementations of the client and server handlers
+are fairly basic, but given time (and your help?), they should get greater
+functionality.  Ideas include: Allowing the x-loggerui to filter based on level.  
+or creating an async version of the server side logger._
+
+Getting more control over the output
+------------------------------------
+
+Now you have seen what can be output, let's take a look at how you customize that.
+
+Each of the handlers (`LoggerUi`, `SyncFileLoggingHandler` and `PrintHandler`)
+implement a `BaseLoggingHandler` interface.  These have a `LogRecordTransformer`
+instance, that transforms an SDK `LogRecord` into some other format.  
+
+The `logging_handlers` package contains two transformers that implement
+`LogRecordTransformer`: `StringTransformer`
+and `MapTransformer`.  All three handlers use a default implementation of a 
+`StringTransformer`, but you can pass an alternative transformer into the 
+constructor of both the `PrintHandler` or `SyncFileLoggingHandler`.  
+
+**StringTransformer**
+
+The `StringTransformer` lets you control the fields that get output, for example:
+
+    main() {
+      var fileHandler = 
+          new SyncFileLoggingHandler("logfile.txt", transformer: new StringTransformer("%m"));
+      Logger.root.onRecord.listen(fileHandler); // default 
+      var myclass = new MyClass(); // from above - outputs log message
+    }
+
+The `StringTransformer` allows formatting strings to specify the output.  %m is 
+just the message without all the other information, and replicates the print 
+command.  
+
+The full list of formatting strings is shown below:
+
+    %p = Outputs LogRecord.level
+    %m = Outputs LogRecord.message
+    %n = Outputs the Logger.name
+    %t = Outputs the timestamp according to the Date Time Format specified
+    %s = Outputs the logger sequence 
+    %x = Outputs the exception
+    %e = Outputs the exception message
+
+The default formatting strings are shown below (with `\t` for tab separation):
+
+    DEFAULT_MESSAGE_FORMAT = "%t\t%n\t[%p]:\t%m";
+    DEFAULT_EXCEPTION_FORMAT = "\n%e\n%x";
+    DEFAULT_DATE_TIME_FORMAT = "yyyy.mm.dd HH:mm:ss.SSS Z";    
+
+You can customize all of these when you create a logger handler.
+
+
+Replacing the `print()` command
+---------------------------
+
+Now that you have seen some of the formatting available, let's see how you can
+actually replace the `print()` command:
+
+
+    main() {
+      // simulate existing print command by only outputting the message
+      Logger.root.onRecord.listen(new PrintHandler(messageFormat:"%m")); 
+    }
+
+Taking control: Logging levels and heirarchical loggers
+--------------------------------------------------------
+
+Let's suppose that you are using my library.
+
+We have `your_library` and `my_library`
+
+You don't want to see my logging when you test your library.  
+How can you control it?
+
+Let's look at some code that outputs logging from `your_library` but not 
+`my_library`:
+
+    import 'package:my_library/my_library.dart'; // don't want to see logging here
+    import 'your_library.dart';  // Show logging from this library please :)
+
+    import 'package:logging/logging.dart'; 
+    import 'package:logging_handlers/logging_handlers_shared.dart'; 
+
+    main() {
+      hierarchicalLoggingEnabled = true; // set this to true - its part of Logging SDK
+
+      // now control the logging.
+      // Turn off all logging first
+      Logger.root.level = Level.OFF;
+      Logger.root.onRecord.listen(new PrintHandler());
+ 
+      // create a logger for your library 
+      // (there will be a single instance for each logger with the same name)
+      // and set the level to ALL
+      new Logger("your_library")..level = Level.ALL;
+      
+      doSomethingInYourLibrary(); // logging is output to console
+      doSomethingInMyLibrary(); // logging is not be output      
+    }
+
+Now let's use the hierarchy to use different logging for a specific class 
+(assuming that you have a class logger created for `your_library.YourClass`):
+
+
+    main() {
+      hierarchicalLoggingEnabled = true; // set this to true - its part of Logging SDK
+
+      // now control the logging.
+      // Turn off all logging first
+      Logger.root.level = Level.OFF;
+      Logger.root.onRecord.listen(new PrintHandler());
+ 
+      // create a logger for your library 
+      // (there is only a single instance for each logger with the same name)
+      // and set the level to ALL
+      new Logger("your_library")..level = Level.INFO;
+      new Logger("your_library.YourClass")..level = Level.ALL; 
+
+      
+      doSomethingInYourLibrary(); // Only INFO logging is output to console
+      new YourClass(); // All logging output to the console
+      doSomethingInMyLibrary(); // logging is not be output      
+    }
+
+
+Caveats
+--------
+
+The Logger framework (as at M4), has a TODO about logging exceptions.  At the 
+moment it doesn't.  If you want to log exceptions, add the exception text to
+the log message.
