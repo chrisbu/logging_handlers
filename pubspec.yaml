@@ -6,12 +6,12 @@ homepage: https://github.com/chrisbu/logging_handlers
 environment:
   sdk: '>=0.5.13+1'
 dependencies:
-  intl: 0.5.13
-  logging: 0.5.13
-  web_ui: 0.4.9+5
+  intl: '>=0.5.13'
+  logging: '>=0.5.13'
+  web_ui: '>=0.4.9+5'
 dev_dependencies:
-  browser: 0.5.13
-  unittest: 0.5.13
+  browser: '>=0.5.13'
+  unittest: '>=0.5.13'
 
 #dependencies:
 #  unittest: any
