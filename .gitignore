@@ -1,2 +1,10 @@
 packages
 pubspec.lock
+.buildlog
+example/browser/out/_from_packages/logging_handlers/src/client/loggerui.dart
+example/browser/out/_from_packages/logging_handlers/src/client/loggerui.dart.map
+example/browser/out/test.dart
+example/browser/out/test.dart.map
+example/browser/out/test.html
+example/browser/out/test.html_bootstrap.dart
+test/server/mylog1.txt

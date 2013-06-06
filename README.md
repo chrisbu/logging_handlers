@@ -1,6 +1,8 @@
 logging_handlers
 ================
 
+[![Build Status](https://drone.io/github.com/DanieleSalatti/logging_handlers/status.png)](https://drone.io/github.com/DanieleSalatti/logging_handlers/latest)
+
 A package of logging handlers, for either the client or server, that uses the 
 Dart SDK's [`logging` pub package](http://pub.dartlang.org/packages/logging)
 
