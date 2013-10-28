@@ -96,10 +96,10 @@ runMapTransformerTests() {
     var logRecord = new LogRecord(Level.INFO, message, loggerName, time);
     
     var impl = new MapTransformer();
-    var map = impl.transform(logRecord); // convert the logRecord to a map    
-    String json = stringify(map); // convert the map to json with dart:json
-    Map map2 = parse(json); // convert the json back to a map
-    
+    var map = impl.transform(logRecord); // convert the logRecord to a map
+    String json = JSON.encode(map); // convert the map to json with dart:json
+    Map map2 = JSON.decode(json); // convert the json back to a map
+
     expect(map2["message"], equals(logRecord.message));
     expect(map2["loggerName"], equals(logRecord.loggerName));
     expect(map2["level"], equals(logRecord.level.name));
@@ -123,10 +123,10 @@ runMapTransformerTests() {
         "Exception text");
     
     var impl = new MapTransformer();
-    var map = impl.transform(logRecord); // convert the logRecord to a map    
-    String json = stringify(map); // convert the map to json with dart:json
-    Map map2 = parse(json); // convert the json back to a map
-    
+    var map = impl.transform(logRecord); // convert the logRecord to a map
+    String json = JSON.encode(map); // convert the map to json with dart:json
+    Map map2 = JSON.decode(json); // convert the json back to a map
+
     expect(map2["message"], equals(logRecord.message));
     expect(map2["loggerName"], equals(logRecord.loggerName));
     expect(map2["level"], equals(logRecord.level.name));

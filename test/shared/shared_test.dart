@@ -3,7 +3,7 @@ library shared_test;
 import 'package:logging_handlers/logging_handlers_shared.dart'; 
 import 'package:unittest/unittest.dart';
 import 'package:logging/logging.dart';
-import 'dart:json';
+import 'dart:convert';
 
 part 'src/transformer_tests.dart';
 
