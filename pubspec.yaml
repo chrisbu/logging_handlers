@@ -4,14 +4,14 @@ author: Chris Buckett <chrisbuckett@gmail.com>
 description: A selection of handlers that you can use as targets for the "logger" pub package.  Stop using print() and start using logger.info()
 homepage: https://github.com/chrisbu/logging_handlers
 environment:
-  sdk: '>=0.8.7'
+  sdk: '>=0.8.10+6 <2.0.0'
 dependencies:
-  intl: '>=0.8.7'
-  web_ui: '>=0.4.23'
-  logging: '>=0.8.7'
+  intl: '>=0.9.0 <0.10.0'
+  web_ui: '>=0.4.27'
+  logging: '>=0.9.0 <0.10.0'
 dev_dependencies:
-  unittest: '>=0.8.7'
-  browser: '>=0.8.7'
+  unittest: '>=0.9.0 <0.10.0'
+  browser: '>=0.9.0 <0.10.0'
 
 #dependencies:
 #  unittest: any
