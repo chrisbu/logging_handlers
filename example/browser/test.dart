@@ -12,7 +12,7 @@ main() {
    attachXLoggerUi();
    
    
-   query("#click").onClick.listen((_) {
+   querySelector("#click").onClick.listen((_) {
      logger.info("Button clicked");
      debug("Foo", "loggerui");
    });

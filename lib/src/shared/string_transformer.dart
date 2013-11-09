@@ -21,7 +21,7 @@ class StringTransformer implements LogRecordTransformer {
   /// Outputs the logger sequence
   static const SEQ = "%s"; // logger sequence
   static const EXCEPTION = "%x"; // logger exception
-  static const EXCEPTION_TEXT = "%e"; // logger exception message
+  static const STACK_TRACE = "%e"; // logger stack trace
   static const TAB = "\t";
   static const NEW_LINE = "\n";
   
@@ -48,7 +48,7 @@ class StringTransformer implements LogRecordTransformer {
   DateFormat dateFormat;
   
   /// Contains the regexp pattern
-  static final _regexp = new RegExp("($LEVEL|$MESSAGE|$NAME|$TIME|$SEQ|$EXCEPTION|$EXCEPTION_TEXT)");
+  static final _regexp = new RegExp("($LEVEL|$MESSAGE|$NAME|$TIME|$SEQ|$EXCEPTION|$STACK_TRACE)");
   
   StringTransformer({
       String this.messageFormat : StringTransformer.DEFAULT_MESSAGE_FORMAT,
@@ -62,7 +62,7 @@ class StringTransformer implements LogRecordTransformer {
    * [exceptionFormatSuffix] and [timestampFormat] pattern.
    */
   String transform(LogRecord logRecord) {
-    var formatString = logRecord.exception == null ? 
+    var formatString = logRecord.error == null ? 
                                   messageFormat : 
                                   messageFormat+exceptionFormatSuffix;
     
@@ -92,10 +92,10 @@ class StringTransformer implements LogRecordTransformer {
           case SEQ:
             return logRecord.sequenceNumber.toString();
           case EXCEPTION: 
-            if (logRecord.exception != null) return logRecord.exception.toString();
+            if (logRecord.error != null) return logRecord.error.toString();
             break;
-          case EXCEPTION_TEXT:
-            return logRecord.exceptionText;
+          case STACK_TRACE:
+            if (logRecord.stackTrace != null) return logRecord.stackTrace.toString();
         }
       }
 

@@ -1,7 +1,7 @@
 library browser;
 
 import 'dart:html';
-import 'dart:async'; 
+import 'dart:async' show Timer; 
 import 'logging_handlers_shared.dart';
 import 'package:logging/logging.dart';
 export 'logging_handlers_shared.dart';
@@ -14,7 +14,7 @@ export 'logging_handlers_shared.dart';
  */
 void attachXLoggerUi([bool addPrintHandler=true]) {
   Timer.run(() {
-    var loggerComponents = queryAll("div[is=x-loggerui]");
+    var loggerComponents = querySelectorAll("div[is=x-loggerui]");
     print(loggerComponents);
     var listener = Logger.root.onRecord.asBroadcastStream();
     loggerComponents.forEach((component) {
