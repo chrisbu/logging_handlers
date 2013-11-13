@@ -1,17 +1,14 @@
 name: logging_handlers
-version: 0.5.0+1
+version: 0.8.0
 author: Chris Buckett <chrisbuckett@gmail.com>
 description: A selection of handlers that you can use as targets for the "logger" pub package.  Stop using print() and start using logger.info()
 homepage: https://github.com/chrisbu/logging_handlers
 environment:
-  sdk: '>=0.5.0+1.r21823'
+  sdk: '>=0.8.10'
 dependencies:
-  intl: 0.5.0+1
-  web_ui: 0.4.6+2
-  logging: 0.5.0+1
+  intl: '>=0.8.10+3'
+  logging: '>0.8.10+3'
 dev_dependencies:
-  unittest: 0.5.0+1
-  browser: '>=0.5.0+1'
-
-#dependencies:
-#  unittest: any
+  browser: '>=0.8.10+3'
+  polymer: '>=0.8.10'
+  unittest: '>=0.8.10+3'

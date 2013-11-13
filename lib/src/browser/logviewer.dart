@@ -2,6 +2,7 @@ library logviewer;
 
 import 'package:polymer/polymer.dart';
 import 'package:logging_handlers/logging_handlers_shared.dart';
+import 'package:logging/logging.dart';
 
 @CustomTag('log-viewer')
 class LogViewer extends PolymerElement  {
