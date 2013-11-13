@@ -3,7 +3,8 @@ library shared_test;
 import 'package:logging_handlers/logging_handlers_shared.dart'; 
 import 'package:unittest/unittest.dart';
 import 'package:logging/logging.dart';
-import 'dart:json';
+import 'dart:convert';
+import 'package:intl/intl.dart';
 
 part 'src/transformer_tests.dart';
 
@@ -21,7 +22,7 @@ runTopLevelTests() {
       var logger = new Logger("mylogger");
       var printed = "";
       var printFunc = (value) => printed = value;
-      logger.onRecord.listen(new PrintHandler(messageFormat:"%m", printFunc:printFunc));
+      logger.onRecord.listen(new LogPrintHandler(messageFormat:"%m", printFunc:printFunc));
       logger.info("Hello World");
       expect(printed, equals("Hello World"));
     });
@@ -30,7 +31,7 @@ runTopLevelTests() {
       var logger = new Logger("mylogger");
       var printed = "";
       var printFunc = (value) => printed = value;
-      logger.onRecord.listen(new PrintHandler(printFunc:printFunc));
+      logger.onRecord.listen(new LogPrintHandler(printFunc:printFunc));
       //logger.onRecord.listen(printHandler(printFunc:printFunc));
       logger.info("Hello World");
       // contains, rather than equals, because it contains the always-changing timestamp

@@ -14,7 +14,7 @@ export 'logging_handlers_shared.dart';
  */
 void attachXLoggerUi([bool addPrintHandler=true]) {
   Timer.run(() {
-    var loggerComponents = queryAll("div[is=x-loggerui]");
+    var loggerComponents = querySelectorAll("div[is=x-loggerui]");
     print(loggerComponents);
     var listener = Logger.root.onRecord.asBroadcastStream();
     loggerComponents.forEach((component) {
@@ -23,6 +23,6 @@ void attachXLoggerUi([bool addPrintHandler=true]) {
     	});
     
     //optionally attach a default print handler
-    if (addPrintHandler) listener.listen(new PrintHandler());
+    if (addPrintHandler) listener.listen(new LogPrintHandler());
   });
 }

@@ -5,14 +5,15 @@ import 'dart:async';
 
 main() {
    hierarchicalLoggingEnabled = true;
+   Logger.root.level = Level.OFF;
    var logger = new Logger("mylogger")..level = Level.ALL;
-   new Logger("loggerui")..level = Level.ALL;
-   Logger.root.level = Level.ALL;
+   new Logger("loggerui");//..level = Level.ALL;
+   
    
    attachXLoggerUi();
    
    
-   query("#click").onClick.listen((_) {
+   querySelector("#click").onClick.listen((_) {
      logger.info("Button clicked");
      debug("Foo", "loggerui");
    });

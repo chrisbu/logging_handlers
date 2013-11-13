@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-
-<html>
-  <body>
-    <element name="x-loggerui" constructor="LoggerUi" extends="div">
+    <polymer-element name="log-loggerui">
       <template>
          <style>
            #loggerbox {
@@ -16,13 +12,12 @@
              padding:0px;
            }
          </style>
-         <div id="loggerbox" >
-             <template iterate="message in messages">
-               <pre class="loggerline">{{ message }}</pre>
+         <h2>Log messages</h2>
+         <div id="loggerbox">
+             <template repeat="{{messages}}">
+               <pre class="loggerline">{{}}</pre>
              </template>
          </div>
       </template>
       <script type="application/dart" src="loggerui.dart"></script>  
-    </element>   
-  </body>
-</html>
+    </polymer-element>   

@@ -33,7 +33,7 @@ class StringTransformer implements LogRecordTransformer {
   static const DEFAULT_EXCEPTION_FORMAT = "\n%e\n%x";
   
   /// Default date time format for log messages
-  static const DEFAULT_DATE_TIME_FORMAT = "yyyy.mm.dd HH:mm:ss.SSS Z";
+  static const DEFAULT_DATE_TIME_FORMAT = "yyyy.mm.dd HH:mm:ss.SSS";
   
   /// Contains the standard message format string
   final String messageFormat;
@@ -62,7 +62,7 @@ class StringTransformer implements LogRecordTransformer {
    * [exceptionFormatSuffix] and [timestampFormat] pattern.
    */
   String transform(LogRecord logRecord) {
-    var formatString = logRecord.exception == null ? 
+    var formatString = logRecord.error == null ? 
                                   messageFormat : 
                                   messageFormat+exceptionFormatSuffix;
     
@@ -91,11 +91,10 @@ class StringTransformer implements LogRecordTransformer {
             break;
           case SEQ:
             return logRecord.sequenceNumber.toString();
-          case EXCEPTION: 
-            if (logRecord.exception != null) return logRecord.exception.toString();
-            break;
+          case EXCEPTION:
           case EXCEPTION_TEXT:
-            return logRecord.exceptionText;
+            if (logRecord.error != null) return logRecord.error.toString();
+            break;
         }
       }
 

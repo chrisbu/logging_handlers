@@ -1,6 +1,6 @@
 library logging_handlers_shared;
 
-import 'dart:json';
+import 'dart:convert';
 
 import 'package:logging/logging.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +36,7 @@ log(String message, Level level, [String loggerName]) {
 /// quick replacement for `print()` - use `info()` or `debug()`
 startQuickLogging() {
   hierarchicalLoggingEnabled = true;
-  Logger.root.onRecord.listen(new PrintHandler());
+  Logger.root.onRecord.listen(new LogPrintHandler());
   info("Quick'n'Dirty logging is enabled.  Better to do it properly, though."); 
 }
 
@@ -63,7 +63,7 @@ startQuickLogging() {
  *     logger.info("Hello World"); 
  *     // 2013-04-26 11:50:40.506 mylogger  [INFO]: Hello World
  *   
- *  The [PrintHandler] constr uctor takes the following optional parameters:
+ *  The [LogPrintHandler] constr uctor takes the following optional parameters:
  *  
  *  - [messageFormat] - The format string for log messages.  
  *    This defaults to [StringTransformer.DEFAULT_MESSAGE_FORMAT].
@@ -79,7 +79,7 @@ startQuickLogging() {
  *  Check out the [StringTransformer] class for possible format strings.
  *  
  */
-class PrintHandler implements BaseLoggingHandler {
+class LogPrintHandler implements BaseLoggingHandler {
   
   LogRecordTransformer transformer;
   String messageFormat;
@@ -87,7 +87,7 @@ class PrintHandler implements BaseLoggingHandler {
   String timestampFormat;
   Function printFunc;
   
-  PrintHandler({
+  LogPrintHandler({
       this.messageFormat: StringTransformer.DEFAULT_MESSAGE_FORMAT, 
       this.exceptionFormatSuffix: StringTransformer.DEFAULT_EXCEPTION_FORMAT, 
       this.timestampFormat: StringTransformer.DEFAULT_DATE_TIME_FORMAT,
