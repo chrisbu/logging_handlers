@@ -33,7 +33,7 @@ class StringTransformer implements LogRecordTransformer {
   static const DEFAULT_EXCEPTION_FORMAT = "\n%e\n%x";
   
   /// Default date time format for log messages
-  static const DEFAULT_DATE_TIME_FORMAT = "yyyy.mm.dd HH:mm:ss.SSS";
+  static const DEFAULT_DATE_TIME_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";
   
   /// Contains the standard message format string
   final String messageFormat;
